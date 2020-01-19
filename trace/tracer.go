@@ -11,6 +11,7 @@ type Tracer interface {
 	Trace(...interface{})
 }
 
+// New returns a  new Tracer
 func New(w io.Writer) Tracer {
 	return &tracer{out: w}
 }
