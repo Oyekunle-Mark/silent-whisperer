@@ -17,3 +17,8 @@ func (a *authHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	a.next.ServeHTTP(w, r)
 }
+
+// MustAuth protects a handler using authHandler
+func MustAuth(handler http.Handler) http.Handler {
+	return &authHandler{next: handler}
+}
