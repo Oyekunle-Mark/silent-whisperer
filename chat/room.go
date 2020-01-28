@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/stretchr/objx"
+
 	"github.com/Oyekunle-Mark/silent-whisperer/trace"
 	"github.com/gorilla/websocket"
 )
@@ -63,10 +65,18 @@ func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	authCookie, err := req.Cookie("auth")
+
+	if err != nil {
+		log.Fatal("Failed to get auth cookie:", err)
+		return
+	}
+
 	client := &client{
-		socket: socket,
-		send:   make(chan *message, messageBufferSize),
-		room:   r,
+		socket:   socket,
+		send:     make(chan *message, messageBufferSize),
+		room:     r,
+		userData: objx.MustFromBase64(authCookie.Value),
 	}
 
 	r.join <- client
