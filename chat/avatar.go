@@ -18,6 +18,22 @@ type Avatar interface {
 	GetAvatarURL(ChatUser) (string, error)
 }
 
+// TryAvatars type is simply a slice of Avatar objects
+// that we are free to add methods to
+type TryAvatars []Avatar
+
+// GetAvatarURL gets the avatar URL for the slice of avatars,
+// or returns an error if something goes wrong.
+func (a TryAvatars) GetAvatarURL(u ChatUser) (string, error) {
+	for _, avatar := range a {
+		if url, err := avatar.GetAvatarURL(u); err == nil {
+			return url, nil
+		}
+	}
+
+	return "", ErrNoAvatarURL
+}
+
 // AuthAvatar type implements Avatar interface
 type AuthAvatar struct{}
 
