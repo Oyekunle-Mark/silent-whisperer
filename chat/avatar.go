@@ -26,14 +26,14 @@ var UseAuthAvatar AuthAvatar
 
 // GetAvatarURL gets the avatar URL for the specified client,
 // or returns an error if something goes wrong.
-func (AuthAvatar) GetAvatarURL(c *client) (string, error) {
-	if url, ok := c.userData["avatar_url"]; ok {
-		if urlStr, ok := url.(string); ok {
-			return urlStr, nil
-		}
+func (AuthAvatar) GetAvatarURL(u ChatUser) (string, error) {
+	url := u.AvatarURL()
+
+	if len(url) == 0 {
+		return "", ErrNoAvatarURL
 	}
 
-	return "", ErrNoAvatarURL
+	return url, nil
 }
 
 // GravatarAvatar type implements Avatar interface
