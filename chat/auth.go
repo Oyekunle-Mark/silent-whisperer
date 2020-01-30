@@ -8,8 +8,23 @@ import (
 	"strings"
 
 	"github.com/stretchr/gomniauth"
+	gomniauthcommon "github.com/stretchr/gomniauth/common"
 	"github.com/stretchr/objx"
 )
+
+type ChatUser interface {
+	UniqueID() string
+	AvatarURL() string
+}
+
+type chatUser struct {
+	gomniauthcommon.User
+	uniqueID string
+}
+
+func (c chatUser) UniqueID() string {
+	return c.uniqueID
+}
 
 type authHandler struct {
 	next http.Handler
