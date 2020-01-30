@@ -62,6 +62,9 @@ func main() {
 			Path:   "/",
 			MaxAge: -1,
 		})
+
+		w.Header().Set("Location", "/login")
+		w.WriteHeader(http.StatusTemporaryRedirect)
 	})
 
 	// get the room going
