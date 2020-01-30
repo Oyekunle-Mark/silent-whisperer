@@ -3,7 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"os"
-	"path/filepath"
+	"path"
 	"testing"
 
 	gomniauthtest "github.com/stretchr/gomniauth/test"
@@ -50,14 +50,15 @@ func TestGravatarAvatar(t *testing.T) {
 }
 
 func TestFileSystemAvatar(t *testing.T) {
-	filename := filepath.Join("avatars", "abc.jpg")
+	// make a test avatar file
+	filename := path.Join("avatars", "abc.jpg")
 	ioutil.WriteFile(filename, []byte{}, 0777)
-	defer os.Remove(filename)
+
+	defer func() { os.Remove(filename) }()
 
 	var fileSystemAvatar FileSystemAvatar
-	client := new(client)
-	client.userData = map[string]interface{}{"userid": "abc"}
-	url, err := fileSystemAvatar.GetAvatarURL(client)
+	user := &chatUser{uniqueID: "abc"}
+	url, err := fileSystemAvatar.GetAvatarURL(user)
 
 	if err != nil {
 		t.Error("FileSystemAvatar.GetAvatarURL should not return an error")
