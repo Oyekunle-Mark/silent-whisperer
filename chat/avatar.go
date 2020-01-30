@@ -51,3 +51,15 @@ func (GravatarAvatar) GetAvatarURL(c *client) (string, error) {
 
 	return "", ErrNoAvatarURL
 }
+
+// FileSystemAvatar type implements Avatar interface
+type FileSystemAvatar struct{}
+
+// UseFileSystemAvatar has the AuthAvatar type
+var UseFileSystemAvatar FileSystemAvatar
+
+// GetAvatarURL gets the avatar URL for the specified client,
+// or returns an error if something goes wrong.
+func (FileSystemAvatar) GetAvatarURL(c *client) (string, error) {
+
+}
