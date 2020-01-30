@@ -61,5 +61,11 @@ var UseFileSystemAvatar FileSystemAvatar
 // GetAvatarURL gets the avatar URL for the specified client,
 // or returns an error if something goes wrong.
 func (FileSystemAvatar) GetAvatarURL(c *client) (string, error) {
+	if userid, ok := c.userData["userid"]; ok {
+		if useridStr, ok := userid.(string); ok {
+			return "/avatars/" + useridStr + ".jpg", nil
+		}
+	}
 
+	return "", ErrNoAvatarURL
 }
