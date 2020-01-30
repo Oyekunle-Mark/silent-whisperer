@@ -16,6 +16,9 @@ import (
 	"github.com/stretchr/objx"
 )
 
+// set the active Avatar implementation
+var avatar Avatar = UseFileSystemAvatar
+
 type templateHandler struct {
 	once     sync.Once
 	filename string
