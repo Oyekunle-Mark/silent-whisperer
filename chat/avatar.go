@@ -1,10 +1,14 @@
 package main
 
 import (
+	"crypto/md5"
 	"errors"
+	"fmt"
+	"io"
+	"strings"
 )
 
-// ErrNoAvatarURL is the error that is returned when the 
+// ErrNoAvatarURL is the error that is returned when the
 // Avatar instance is unable to provide an avatar URL.
 var ErrNoAvatarURL = errors.New("chat: Unable to get an avatar URL")
 
@@ -17,15 +21,38 @@ type Avatar interface {
 }
 
 // AuthAvatar type implements Avatar interface
-type AuthAvatar struct {}
+type AuthAvatar struct{}
+
 // UseAuthAvatar has the AuthAvatar type
 var UseAuthAvatar AuthAvatar
 
-// GetAvatarURL gets the avatar URL for the specified client, // or returns an error if something goes wrong.
+// GetAvatarURL gets the avatar URL for the specified client,
+// or returns an error if something goes wrong.
 func (AuthAvatar) GetAvatarURL(c *client) (string, error) {
 	if url, ok := c.userData["avatar_url"]; ok {
 		if urlStr, ok := url.(string); ok {
 			return urlStr, nil
+		}
+	}
+
+	return "", ErrNoAvatarURL
+}
+
+// GravatarAvatar type implements Avatar interface
+type GravatarAvatar struct{}
+
+// UseGravatarAvatar has the AuthAvatar type
+var UseGravatarAvatar GravatarAvatar
+
+// GetAvatarURL gets the avatar URL for the specified client,
+// or returns an error if something goes wrong.
+func (GravatarAvatar) GetAvatarURL(c *client) (string, error) {
+	if email, ok := c.userData["email"]; ok {
+		if emailStr, ok := email.(string); ok {
+			m := md5.New()
+			io.WriteString(m, strings.ToLower(emailStr))
+
+			return fmt.Sprintf("//www.gravatar.com/avatar/%x", m.Sum(nil)), nil
 		}
 	}
 
