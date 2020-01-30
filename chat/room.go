@@ -16,6 +16,7 @@ type room struct {
 	leave   chan *client
 	clients map[*client]bool
 	tracer  trace.Tracer
+	avatar  Avatar
 }
 
 // newRoom makes a new room.
@@ -26,6 +27,7 @@ func newRoom() *room {
 		leave:   make(chan *client),
 		clients: make(map[*client]bool),
 		tracer:  trace.Off(),
+		avatar: avatar,
 	}
 }
 
