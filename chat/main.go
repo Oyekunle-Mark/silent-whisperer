@@ -17,7 +17,11 @@ import (
 )
 
 // set the active Avatar implementation
-var avatars Avatar = UseFileSystemAvatar
+var avatars Avatar = TryAvatars{
+	UseFileSystemAvatar,
+	UseAuthAvatar,
+	UseGravatarAvatar,
+}
 
 type templateHandler struct {
 	once     sync.Once
