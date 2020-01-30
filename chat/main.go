@@ -17,7 +17,7 @@ import (
 )
 
 // set the active Avatar implementation
-var avatar Avatar = UseFileSystemAvatar
+var avatars Avatar = UseFileSystemAvatar
 
 type templateHandler struct {
 	once     sync.Once
