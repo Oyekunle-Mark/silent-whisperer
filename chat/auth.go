@@ -12,6 +12,7 @@ import (
 	"github.com/stretchr/objx"
 )
 
+// ChatUser interface holds the avatar and unique id of a client
 type ChatUser interface {
 	UniqueID() string
 	AvatarURL() string
