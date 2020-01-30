@@ -44,14 +44,8 @@ var UseGravatarAvatar GravatarAvatar
 
 // GetAvatarURL gets the avatar URL for the specified client,
 // or returns an error if something goes wrong.
-func (GravatarAvatar) GetAvatarURL(c *client) (string, error) {
-	if userid, ok := c.userData["userid"]; ok {
-		if useridStr, ok := userid.(string); ok {
-			return "//www.gravatar.com/avatar/" + useridStr, nil
-		}
-	}
-
-	return "", ErrNoAvatarURL
+func (GravatarAvatar) GetAvatarURL(u ChatUser) (string, error) {
+	return "//www.gravatar.com/avatar/" + u.UniqueID(), nil
 }
 
 // FileSystemAvatar type implements Avatar interface
